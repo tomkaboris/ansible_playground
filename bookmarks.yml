@@ -25,6 +25,13 @@
         fail_msg: "{{ ansible_distribution }} {{ ansible_distribution_version }} is not supported, host will be skipped"
         success_msg: "{{ ansible_distribution }} {{ ansible_distribution_version }} is supported"
       ignore_errors: false
+
+    - name: Run only on currently allowed distributions
+      debug: msg="{{ ansible_distribution }} is not yet supported"
+      when:
+        - ansible_distribution != 'RedHat'
+        - ansible_distribution != 'CentOS'
+      failed_when: true
     
     - name: INSTALL A LIST OF PACKAGES THAT ARE NOT ALREADY INSTALLED
       package:
