@@ -1,24 +1,27 @@
-# Use the official image as a parent image
+# Use a base image with the desired OS (e.g., Ubuntu, Debian, etc.)
 FROM ubuntu:bionic as build
-
 LABEL maintainer="Tomka Boris"
 
-# Change pass for root user
-RUN echo 'root:pass' | chpasswd
-
-# Update the system, install OpenSSH Server, and set up users
-RUN apt-get update --fix-missing || true && \ 
-    apt install -y --no-install-recommends python-minimal python-pip netcat jq sshpass openssh-client python-setuptools && \
-    apt-get clean autoclean && \
-    apt-get autoremove --yes && \
+# Install SSH server
+RUN apt-get update && \
+    apt-get install -y openssh-server ansible vim iputils-ping && \
     rm -rf  /var/lib/{apt,dpkg,cache,log}/ /tmp/* /var/tmp/*
 
-# Install ansible
-RUN pip install ansible==2.9.4
+# Create an SSH user
+RUN useradd -rm -d /home/ansible -s /bin/bash -g root -G sudo -u 1000 ansible
 
-# Run SSH after image is build
+# Set the SSH user's password (replace "password" with your desired password)
+RUN echo 'ansible:pass' | chpasswd
+
+# Allow SSH access
+RUN mkdir /var/run/sshd
+
+# Expose the SSH port
+EXPOSE 22
+
+# Start SSH server on container startup
 CMD ["/usr/sbin/sshd", "-D"]
 
-# Using multi-stage builds is the current best practice strategy for layer optimization.
+# Using multi-stage builds since is the current best practice strategy for layer optimization.
 FROM scratch
 COPY --from=build / /

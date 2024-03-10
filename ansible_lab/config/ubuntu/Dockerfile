@@ -1,21 +1,26 @@
-# Use the official image as a parent image
 FROM ubuntu:bionic as build
-
 LABEL maintainer="Tomka Boris"
 
-# Change pass for root user
-RUN echo 'root:pass' | chpasswd
-
-# Update the system, install OpenSSH Server, and set up users
-RUN apt-get update --fix-missing || true && \ 
-    apt install -y --no-install-recommends python-minimal python-pip netcat jq sshpass openssh-server python-setuptools && \
-    apt-get clean autoclean && \
-    apt-get autoremove --yes && \
+# Install SSH server
+RUN apt-get update && \
+    apt-get install -y openssh-server vim iputils-ping && \
     rm -rf  /var/lib/{apt,dpkg,cache,log}/ /tmp/* /var/tmp/*
 
-# Run SSH after image is build
+# Create an SSH user
+RUN useradd -rm -d /home/ubuntu -s /bin/bash -g root -G sudo -u 1000 ubuntu
+
+# Set the SSH user's password (replace "password" with your desired password)
+RUN echo 'ubuntu:pass' | chpasswd
+
+# Allow SSH access
+RUN mkdir /var/run/sshd
+
+# Expose the SSH port
+EXPOSE 22
+
+# Start SSH server on container startup
 CMD ["/usr/sbin/sshd", "-D"]
 
-# Using multi-stage builds is the current best practice strategy for layer optimization.
+# Using multi-stage builds since is the current best practice strategy for layer optimization.
 FROM scratch
 COPY --from=build / /
