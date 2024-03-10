@@ -4,14 +4,21 @@ FROM centos:7 as build
 LABEL maintainer="Tomka Boris"
 
 # Change pass for root user
-RUN echo 'root:pass' | chpasswd
+RUN echo 'pass' | passwd --stdin root
 
 # Update the system, install OpenSSH Server, and set up users
-RUN yum -y install openssh-server && ssh-keygen -A && systemctl enable sshd
+RUN yum install openssh-server -y
 
-# Run SSH after image is build
+# Configure SSH
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N ''
+
+# Opern port 22
+EXPOSE 22
+
+# Start SSH server
 CMD ["/usr/sbin/sshd", "-D"]
 
-# Using multi-stage builds is the current best practice strategy for layer optimization.
+# Using multi-stage builds since is the current best practice strategy for layer optimization.
 FROM scratch
 COPY --from=build / /
