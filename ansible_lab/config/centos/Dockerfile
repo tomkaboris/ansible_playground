@@ -19,6 +19,6 @@ EXPOSE 22
 # Start SSH server
 CMD ["/usr/sbin/sshd", "-D"]
 
-# Using multi-stage builds since is the current best practice strategy for layer optimization.
+# Using multi-stage builds as it is best practice strategy for layer optimization.
 FROM scratch
 COPY --from=build / /
