@@ -13,7 +13,7 @@ RUN apt-get update && \
 # Allow SSH access
 RUN mkdir /var/run/sshd
 RUN sed -i '/PasswordAuthentication no/c\PasswordAuthentication yes' /etc/ssh/sshd_config
-# RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
 # Expose the SSH port
 EXPOSE 22
