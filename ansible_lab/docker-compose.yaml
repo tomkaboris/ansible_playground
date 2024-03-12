@@ -21,7 +21,7 @@ services:
   ubuntu:
     hostname: ubuntu
     container_name: ubuntu
-    image: ubuntu-lab
+    image: bubuntu
     build: ${CONFIG}/ubuntu
     command: ["/usr/sbin/sshd","-D"]
     ports: 
@@ -38,7 +38,7 @@ services:
   centos:
     hostname: centos
     container_name: centos
-    image: centos-lab
+    image: bcentos
     build: ${CONFIG}/centos
     command: ["/usr/sbin/sshd","-D"]
     ports: 
