@@ -1,0 +1,2 @@
+service ssh status
+exit

@@ -6,7 +6,7 @@ services:
     container_name: controler
     image: controler
     build: ${CONFIG}/controler
-    command: ["sleep","infinity"]
+    command: ["/usr/sbin/sshd","-D"]
     ports: 
      - ${CONTROLER_PORT_SSH}:22
     privileged: true
@@ -16,14 +16,14 @@ services:
      - ${ANSIBLE_HOME}/controler/root:/root
     networks:
       btomka:
-        ipv4_address: 10.5.0.4
+        ipv4_address: 10.5.0.2
 
   ubuntu:
     hostname: ubuntu
     container_name: ubuntu
     image: ubuntu-lab
     build: ${CONFIG}/ubuntu
-    command: ["sleep","infinity"]
+    command: ["/usr/sbin/sshd","-D"]
     ports: 
      - ${UBUNTU_PORT_SSH}:22
     privileged: true
@@ -33,14 +33,14 @@ services:
      - ${ANSIBLE_HOME}/ubuntu1/root:/root
     networks:
       btomka:
-        ipv4_address: 10.5.0.5
+        ipv4_address: 10.5.0.3
 
   centos:
     hostname: centos
     container_name: centos
     image: centos-lab
     build: ${CONFIG}/centos
-    command: ["sleep","infinity"]
+    command: ["/usr/sbin/sshd","-D"]
     ports: 
      - ${CENTOS_PORT_SSH}:22
     privileged: true
@@ -50,7 +50,7 @@ services:
      - ${ANSIBLE_HOME}/centos1/root:/root
     networks:
       btomka:
-        ipv4_address: 10.5.0.6
+        ipv4_address: 10.5.0.4
      
 networks:
   btomka:
