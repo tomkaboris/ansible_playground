@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  controler:
+  pik:
     hostname: pik
     container_name: pik
     image: pik
@@ -18,11 +18,11 @@ services:
       btomka:
         ipv4_address: 10.5.0.2
 
-  ubuntu:
-    hostname: ubuntu
-    container_name: ubuntu
-    image: bubuntu
-    build: ${CONFIG}/ubuntu
+  herc:
+    hostname: herc
+    container_name: herc
+    image: herc
+    build: ${CONFIG}/herc
     command: ["/usr/sbin/sshd","-D"]
     ports: 
      - ${UBUNTU_PORT_SSH}:22
@@ -30,16 +30,16 @@ services:
     volumes:
       # TODO add ssh pub key
      - ${ANSIBLE_HOME}/shared:/shared
-     - ${ANSIBLE_HOME}/ubuntu/root:/root
+     - ${ANSIBLE_HOME}/herc/root:/root
     networks:
       btomka:
         ipv4_address: 10.5.0.3
 
-  centos:
-    hostname: centos
-    container_name: centos
-    image: bcentos
-    build: ${CONFIG}/centos
+  tref:
+    hostname: tref
+    container_name: tref
+    image: tref
+    build: ${CONFIG}/tref
     command: ["/usr/sbin/sshd","-D"]
     ports: 
      - ${CENTOS_PORT_SSH}:22
@@ -47,7 +47,7 @@ services:
     volumes:
       # TODO add ssh pub key
      - ${ANSIBLE_HOME}/shared:/shared
-     - ${ANSIBLE_HOME}/centos/root:/root
+     - ${ANSIBLE_HOME}/tref/root:/root
     networks:
       btomka:
         ipv4_address: 10.5.0.4
