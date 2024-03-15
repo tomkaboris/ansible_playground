@@ -2,18 +2,18 @@ version: '3.8'
 
 services:
   controler:
-    hostname: controler
-    container_name: controler
-    image: controler
-    build: ${CONFIG}/controler
+    hostname: pik
+    container_name: pik
+    image: pik
+    build: ${CONFIG}/pik
     command: ["/usr/sbin/sshd","-D"]
     ports: 
      - ${CONTROLER_PORT_SSH}:22
     privileged: true
     volumes:
-     - ${CONFIG}:/config
+      # TODO add ssh pub key
      - ${ANSIBLE_HOME}/shared:/shared
-     - ${ANSIBLE_HOME}/controler/root:/root
+     - ${ANSIBLE_HOME}/pik/root:/root
     networks:
       btomka:
         ipv4_address: 10.5.0.2
@@ -28,9 +28,9 @@ services:
      - ${UBUNTU_PORT_SSH}:22
     privileged: true
     volumes:
+      # TODO add ssh pub key
      - ${ANSIBLE_HOME}/shared:/shared
-     - ${ANSIBLE_HOME}/ubuntu1/ansible:/home/ansible
-     - ${ANSIBLE_HOME}/ubuntu1/root:/root
+     - ${ANSIBLE_HOME}/ubuntu/root:/root
     networks:
       btomka:
         ipv4_address: 10.5.0.3
@@ -45,9 +45,9 @@ services:
      - ${CENTOS_PORT_SSH}:22
     privileged: true
     volumes:
+      # TODO add ssh pub key
      - ${ANSIBLE_HOME}/shared:/shared
-     - ${ANSIBLE_HOME}/centos1/ansible:/home/ansible
-     - ${ANSIBLE_HOME}/centos1/root:/root
+     - ${ANSIBLE_HOME}/centos/root:/root
     networks:
       btomka:
         ipv4_address: 10.5.0.4
