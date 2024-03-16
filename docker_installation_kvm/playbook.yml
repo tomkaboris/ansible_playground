@@ -1,0 +1,121 @@
+---
+# YAML document begin with the document separator ---
+
+# This minus in YAML indicates a list of item. The playbook 
+# contains a list of lays, with each play being a dictionary
+-
+
+  # Hosts: where our play will run and options it will run with
+  hosts: ubuntu
+  user: ubuntu
+
+  # Vars: variables that will apply to the play, on all targer systems
+  vars:
+    arch_mapping:  # Map ansible architecture {{ ansible_architecture }} names to Docker's architecture names
+      x86_64: amd64
+      aarch64: arm64
+
+  # Tasks: the list of tasks that will be executed within the playbook
+  tasks:
+
+    - name: Remove file if exists
+      file:
+        path: "/etc/apt/sources.list.d/docker.list"
+        state: absent
+
+    - name: Remove if exists
+      apt:
+        pkg: 
+          - docker.io 
+          - docker-doc
+          - docker-compose
+          - docker-compose-v2
+          - podman-docker
+          - containerd
+          - runc
+        state: absent
+      become: true
+
+    - name: Install required system packages
+      apt:
+        update_cache: true
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
+        state: latest
+      become: true
+    
+    - name: Create directory for Docker's GPG key
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+      become: true
+
+    - name: Add Docker's official GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        keyring: /etc/apt/keyrings/docker.gpg
+        state: present
+      become: true
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: >-
+          deb [arch={{ arch_mapping[ansible_architecture] | default(ansible_architecture) }}
+          signed-by=/etc/apt/keyrings/docker.gpg]
+          https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable |
+          tee /etc/apt/sources.list.d/docker.list > /dev/null
+        filename: docker
+        state: present
+      become: true
+
+    - name: Install Docker and related packages
+      apt:
+        update_cache: true
+        pkg:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+      become: true
+
+    - name: Add Docker group
+      group:
+        name: docker
+        state: present
+    
+    - name: Add user to Docker group
+      user:
+        name: "ubuntu"
+        groups: docker
+        append: true
+
+    - name: Enable and start Docker services
+      systemd:
+        name: "{{ item }}"
+        enabled: true
+        state: started
+      loop:
+        - docker.service
+        - containerd.service
+
+    - name: Enable and start Docker services
+      systemd:
+        name: "{{ item }}"
+        enabled: true
+        state: started
+      loop:
+        - docker.service
+        - containerd.service
+
+  # Handlers: the list of handlers that are executed as a notify key from a task
+  
+  # Roles: list of roles to be imported into the play
