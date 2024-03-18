@@ -22,6 +22,7 @@
       file:
         path: "/etc/apt/sources.list.d/docker.list"
         state: absent
+      become: true
 
     - name: Remove if exists
       apt:
@@ -91,12 +92,14 @@
       group:
         name: docker
         state: present
-    
+      become: true
+
     - name: Add user to Docker group
       user:
         name: "ubuntu"
         groups: docker
         append: true
+      become: true
 
     - name: Enable and start Docker services
       systemd:
@@ -106,6 +109,7 @@
       loop:
         - docker.service
         - containerd.service
+      become: true
 
     - name: Enable and start Docker services
       systemd:
@@ -115,6 +119,13 @@
       loop:
         - docker.service
         - containerd.service
+      become: true
+
+    - name: Run the hello-world container
+      docker_container:
+        name: hello-world
+        image: library/hello-world
+      become: true
 
   # Handlers: the list of handlers that are executed as a notify key from a task
   
