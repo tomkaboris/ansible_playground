@@ -1,0 +1,23 @@
+---
+# YAML document begin with the document separator ---
+
+# This minus in YAML indicates a list of item. The playbook 
+# contains a list of lays, with each play being a dictionary
+-
+
+  # Hosts: where our play will run and options it will run with
+  hosts: ubuntu
+  user: ubuntu
+
+  # Vars: variables that will apply to the play, on all targer systems
+
+  # Tasks: the list of tasks that will be executed within the playbook
+  
+  # Handlers: the list of handlers that are executed as a notify key from a task
+
+  # Roles: list of roles to be imported into the play 
+  roles:
+    - docker_role
+
+# Three dots indicate the end of a YAML document
+...
