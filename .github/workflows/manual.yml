@@ -34,3 +34,10 @@ jobs:
       run: |
         ansible --version
         python --version
+
+    - name: Run Ansible script
+      shell: bash 
+      run: |
+        cd docker_installation_kvm/
+        cat playbook.yml
+      
