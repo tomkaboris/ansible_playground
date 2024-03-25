@@ -41,7 +41,7 @@ jobs:
         # Required, playbook filepath
         playbook: playbook.yml
         # Optional, directory where playbooks live
-        directory: ./
+        directory: ./docker_installation_kvm
         # Optional, ansible configuration file content (ansible.cfg)
         configuration: ansible.cfg
         # Optional, SSH private key
