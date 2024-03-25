@@ -28,3 +28,9 @@ jobs:
 
     - name: Install Ansible.
       run: pip3 install ansible-core
+
+    - name: Setup SSH 
+      shell: bash
+      run: |
+        ansible --version
+        python --version
