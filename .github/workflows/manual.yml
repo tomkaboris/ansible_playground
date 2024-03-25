@@ -36,13 +36,13 @@ jobs:
         
     - uses: actions/checkout@v1
     - name: Run playbook
-      uses: ./docker_installation_kvm/
+      uses: ./
       with:
         # Required, playbook filepath
-        playbook: playbook.yml
+        playbook: docker_installation_kvm/playbook.yml
         # Optional, literal inventory file contents
-        inventory: hosts
+        inventory: docker_installation_kvm/hosts
          # Optional, ansible configuration file content (ansible.cfg)
-        configuration: ansible.cfg
+        configuration: docker_installation_kvm/ansible.cfg
           # Optional, SSH known hosts file content
-        known_hosts: my_ssh_key
+        known_hosts: docker_installation_kvm/my_ssh_key
