@@ -36,20 +36,13 @@ jobs:
         python --version
 
     - name: Run playbook
-      uses: dawidd6/action-ansible-playbook@v2
+      uses: ./
       with:
         # Required, playbook filepath
-        playbook: playbook.yml
-        # Optional, directory where playbooks live
-        directory: ./docker_installation_kvm
-        # Optional, ansible configuration file content (ansible.cfg)
-        configuration: ansible.cfg
-        # Optional, SSH private key
-        key: ${{secrets.SSH_PRIVATE_KEY}}
+        playbook: docker_installation_kvm/playbook.yml
         # Optional, literal inventory file contents
-        inventory: hosts
-        # Optional, SSH known hosts file content
-        known_hosts: my_ssh_key
-        # Optional, encrypted vault password
-        vault_password: ${{secrets.VAULT_PASSWORD}}
-      
+        inventory: docker_installation_kvm/hosts
+         # Optional, ansible configuration file content (ansible.cfg)
+        configuration: docker_installation_kvm/ansible.cfg
+          # Optional, SSH known hosts file content
+        known_hosts: docker_installation_kvm/my_ssh_key
