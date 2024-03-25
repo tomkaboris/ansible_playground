@@ -38,6 +38,5 @@ jobs:
     - name: Run Ansible script
       shell: bash 
       run: |
-        cd docker_installation_kvm/
-        cat playbook.yml
+        ls -larth
       
