@@ -20,6 +20,12 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    
+    - name: Setup ssh
+      shell: bash
+      run: |
+         service ssh status
+         eval `ssh-agent -s`
     # Runs a single command using the runners shell
     - name: Send greeting
       run: echo "Hello ${{ inputs.name }}"
