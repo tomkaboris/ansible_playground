@@ -35,8 +35,21 @@ jobs:
         ansible --version
         python --version
 
-    - name: Run Ansible script
-      shell: bash 
-      run: |
-        ls -larth
+    - name: Run playbook
+      uses: dawidd6/action-ansible-playbook@v2
+      with:
+        # Required, playbook filepath
+        playbook: playbook.yml
+        # Optional, directory where playbooks live
+        directory: ./
+        # Optional, ansible configuration file content (ansible.cfg)
+        configuration: ansible.cfg
+        # Optional, SSH private key
+        key: ${{secrets.SSH_PRIVATE_KEY}}
+        # Optional, literal inventory file contents
+        inventory: hosts
+        # Optional, SSH known hosts file content
+        known_hosts: my_ssh_key
+        # Optional, encrypted vault password
+        vault_password: ${{secrets.VAULT_PASSWORD}}
       
