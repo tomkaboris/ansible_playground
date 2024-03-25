@@ -20,12 +20,11 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    
-    - name: Setup ssh
-      shell: bash
-      run: |
-         service ssh status
-         eval `ssh-agent -s`
-    # Runs a single command using the runners shell
-    - name: Send greeting
-      run: echo "Hello ${{ inputs.name }}"
+
+    - name: Set up Python 3.
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Install Ansible.
+      run: pip3 install ansible-core
