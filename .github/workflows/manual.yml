@@ -20,8 +20,6 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - uses: actions/checkout@v1
-
     - name: Set up Python 3.
       uses: actions/setup-python@v5
       with:
@@ -35,15 +33,16 @@ jobs:
       run: |
         ansible --version
         python --version
-
+        
+    - uses: actions/checkout@v1
     - name: Run playbook
-      uses: ./
+      uses: ./docker_installation_kvm/
       with:
         # Required, playbook filepath
-        playbook: docker_installation_kvm/playbook.yml
+        playbook: playbook.yml
         # Optional, literal inventory file contents
-        inventory: docker_installation_kvm/hosts
+        inventory: hosts
          # Optional, ansible configuration file content (ansible.cfg)
-        configuration: docker_installation_kvm/ansible.cfg
+        configuration: ansible.cfg
           # Optional, SSH known hosts file content
-        known_hosts: docker_installation_kvm/my_ssh_key
+        known_hosts: my_ssh_key
