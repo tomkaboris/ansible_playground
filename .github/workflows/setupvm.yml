@@ -6,6 +6,17 @@ name: Setup VM
 on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      ipadd:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'Input IP address of the VM'
+        # Default value if no value is explicitly provided
+        default: '0.0.0.0'
+        # Input has to be provided for the workflow to run
+        required: true
+        # The data type of the input
+        type: string
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
