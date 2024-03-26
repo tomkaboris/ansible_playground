@@ -34,5 +34,6 @@ jobs:
         shell: bash
         run: |
           cd ./docker_installation_kvm/
+          chmod 600 my_ssh_key
           sed 's/ubuntu-terraform/${{ inputs.ipadd }}/g' hosts
           ansible-playbook playbook.yml
