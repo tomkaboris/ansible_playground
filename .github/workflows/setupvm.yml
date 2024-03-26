@@ -30,7 +30,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      - name: Run terraform script
+      - name: Run Ansible playbook
         shell: bash
         run: |
           cd ./docker_installation_kvm/
